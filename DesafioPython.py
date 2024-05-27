@@ -16,18 +16,30 @@ def VerificarCPF(CPF):
     else:
         return False
 
+def LerEstados():
+    with open("config.txt", "r") as file:
+        estados = file.read().split(";")
+        return [estado.strip() for estado in estados]
+
+estados_validos = LerEstados()
+
+def VerificarEstado(estado):
+    if estado in estados_validos:
+        return True
+    else:
+        return False
+
 def inserevalores(nome, cpf, estado, tipo):
     cursor.execute("INSERT INTO Tabela1 (nome, cpf, estado, tipo) VALUES (?, ?, ?, ?)", (nome, cpf, estado, tipo))
     connection.commit()
 
-def pegavalores():
-    rows = cursor.execute("SELECT * FROM Tabela1").fetchall()
-    print(rows)
-
 def funcSalvar(nome, cpf, estado, tipo):
     if VerificarCPF(cpf):
-        inserevalores(nome, cpf, estado, tipo)
-        mb.showinfo("Informação", "Dados salvos com sucesso!")
+        if VerificarEstado(estado):
+            inserevalores(nome, cpf, estado, tipo)
+            mb.showinfo("Informação", "Dados salvos com sucesso!")
+        else:
+            mb.showerror("Erro", "Estado inválido!")
     else:
         mb.showerror("Erro", "CPF inválido! Formato correto: 111.111.111-11")
 
