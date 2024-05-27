@@ -14,17 +14,17 @@ def VerificarCPF(CPF):
             return False
     return True
 
-def inserevalores(nome, cpf, estado):
-    cursor.execute("INSERT INTO Tabela1 (nome, cpf, estado) VALUES (?, ?, ?)", (nome, cpf, estado))
+def inserevalores(nome, cpf, estado, tipo):
+    cursor.execute("INSERT INTO Tabela1 (nome, cpf, estado, tipo) VALUES (?, ?, ?, ?)", (nome, cpf, estado, tipo))
     connection.commit()
 
 def pegavalores():
     rows = cursor.execute("SELECT * FROM Tabela1").fetchall()
     print(rows)
 
-def funcSalvar(nome, cpf, estado):
+def funcSalvar(nome, cpf, estado, tipo):
     if VerificarCPF(cpf):
-        inserevalores(nome, cpf, estado)
+        inserevalores(nome, cpf, estado, tipo)
         mb.showinfo("Informação", "Dados salvos com sucesso!")
     else:
         mb.showerror("Erro", "CPF inválido!")
@@ -52,9 +52,17 @@ def Main():
     textoEntradaEstado = tkinter.StringVar()
     e_estado = tkinter.Entry(root, textvariable=textoEntradaEstado)
     e_estado.pack()
+
+    # Dropdown for tipo
+    label_tipo = tkinter.Label(root, text="Tipo")
+    label_tipo.pack()
+    tipo_var = tkinter.StringVar()
+    combobox_tipo = ttk.Combobox(root, textvariable=tipo_var)
+    combobox_tipo['values'] = ("CLR", "MEI", "SÓCiO")
+    combobox_tipo.pack()
     
     test2 = tkinter.Button(root, text="Salvar")
-    test2['command'] = lambda: funcSalvar(textoEntradaNome.get(), textoEntradaCPF.get(), textoEntradaEstado.get())
+    test2['command'] = lambda: funcSalvar(textoEntradaNome.get(), textoEntradaCPF.get(), textoEntradaEstado.get(), tipo_var.get())
     test2.pack()
 
     root.iconify()
