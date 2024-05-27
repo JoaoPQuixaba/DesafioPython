@@ -1,7 +1,10 @@
 import tkinter
 from tkinter import messagebox as mb
 from tkinter import ttk
+from PIL import Image, ImageTk
 import sqlite3
+import requests
+from io import BytesIO
 
 connection = sqlite3.connect("teste.db")
 
@@ -29,6 +32,16 @@ def Main():
     root.title("Trabalho RAD")
     root.resizable(False, False)
     
+    url = "https://d37iydjzbdkvr9.cloudfront.net/lista10/lista_as-dez-universidades-mais-bonitas-do-mundo/stanford-credito-stanford-edu.jpg"
+    response = requests.get(url)
+    image_data = response.content
+    image = Image.open(BytesIO(image_data))
+    photo = ImageTk.PhotoImage(image)
+
+    img_label = tkinter.Label(root, image=photo)
+    img_label.image = photo
+    img_label.pack()
+
     label_nome = tkinter.Label(root, text="Nome")
     label_nome.pack()
 
@@ -37,13 +50,11 @@ def Main():
     e1.bind('<Key>', lambda x: textoEntrada.set(e1.get() + x.char))
     e1.pack()
 
-    # Label and Entry for CPF
     label_cpf = tkinter.Label(root, text="CPF")
     label_cpf.pack()
     e_cpf = tkinter.Entry(root)
     e_cpf.pack()
 
-    # Label and Entry for Estado
     label_estado = tkinter.Label(root, text="Estado")
     label_estado.pack()
     e_estado = tkinter.Entry(root)
