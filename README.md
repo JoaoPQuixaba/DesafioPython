@@ -78,4 +78,19 @@ Desafio de Python / Git / GitHub da Disciplina "Desenvolvimento Rápido de Aplic
       root.mainloop()  #loop principal, impede o código de seguir e permite capturar inputs
   
   Main()
+  
 ```
+## Como Usar:
+
+### **1. Instale `Python` na sua máquina, por meio [deste link](https://www.python.org/)**
+
+### **2. Faça um clone [desse repositório](https://github.com/JoaoPQuixaba/DesafioPython) na sua máquina:**
+
+* Crie uma pasta no seu computador para esse programa, recomendo colocar o nome **DesafioPython**
+* Abra o `git bash` ou `terminal` dentro dessa pasta
+* Copie a [URL](https://github.com/JoaoPQuixaba/DesafioPython) do repositório
+* Digite `git clone <URL copiada>` e pressione `enter`
+
+### **3. Instale as bibliotecas necessárias pelo terminal, dentro dessa pasta criada:**
+
+### **4. Abra o Arquivo "DesafioPython.py" e seja feliz! 🌟 **
