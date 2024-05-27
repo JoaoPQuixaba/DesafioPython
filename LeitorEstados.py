@@ -3,7 +3,8 @@ config_filename = "config.txt"
 def ler_estados(config_filename):
     try:
         with open(config_filename, 'r', encoding='utf-8') as file:
-            estados = file.readlines()
+            content = file.read().strip()
+            estados = content.split(';')
             estados = [estado.strip() for estado in estados if estado.strip()]
         return estados
     except FileNotFoundError:
