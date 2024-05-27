@@ -1,15 +1,12 @@
 import tkinter
 from tkinter import messagebox as mb
 from tkinter import ttk
-from PIL import Image, ImageTk
 import sqlite3
-import requests
-from io import BytesIO
 
 connection = sqlite3.connect("teste.db")
 
 cursor = connection.cursor()
-cursor.execute("CREATE TABLE IF NOT EXISTS Tabela1 (nome TEXT, curso TEXT, matricula INTEGER)")
+cursor.execute("CREATE TABLE IF NOT EXISTS Tabela1 (nome TEXT, cpf TEXT, estado TEXT)")
 
 def VerificarCPF(CPF):
     for trecho in CPF.split("."):
@@ -17,51 +14,47 @@ def VerificarCPF(CPF):
             return False
     return True
 
-def inserevalores(Valor1, Valor2):
-    cursor.execute("INSERT INTO Tabela1 VALUES ('" + Valor1 + "', '" + Valor2 + "')")
+def inserevalores(nome, cpf, estado):
+    cursor.execute("INSERT INTO Tabela1 (nome, cpf, estado) VALUES (?, ?, ?)", (nome, cpf, estado))
+    connection.commit()
 
 def pegavalores():
     rows = cursor.execute("SELECT * FROM Tabela1").fetchall()
     print(rows)
 
-def funcExemplo():
-    print("Exemplo de funcao")
+def funcSalvar(nome, cpf, estado):
+    if VerificarCPF(cpf):
+        inserevalores(nome, cpf, estado)
+        mb.showinfo("Informação", "Dados salvos com sucesso!")
+    else:
+        mb.showerror("Erro", "CPF inválido!")
 
 def Main():
     root = tkinter.Tk()
     root.title("Trabalho RAD")
     root.resizable(False, False)
     
-    url = "https://d37iydjzbdkvr9.cloudfront.net/lista10/lista_as-dez-universidades-mais-bonitas-do-mundo/stanford-credito-stanford-edu.jpg"
-    response = requests.get(url)
-    image_data = response.content
-    image = Image.open(BytesIO(image_data))
-    photo = ImageTk.PhotoImage(image)
-
-    img_label = tkinter.Label(root, image=photo)
-    img_label.image = photo
-    img_label.pack()
-
     label_nome = tkinter.Label(root, text="Nome")
     label_nome.pack()
 
-    textoEntrada = tkinter.StringVar()
-    e1 = tkinter.Entry(root)
-    e1.bind('<Key>', lambda x: textoEntrada.set(e1.get() + x.char))
+    textoEntradaNome = tkinter.StringVar()
+    e1 = tkinter.Entry(root, textvariable=textoEntradaNome)
     e1.pack()
 
     label_cpf = tkinter.Label(root, text="CPF")
     label_cpf.pack()
-    e_cpf = tkinter.Entry(root)
+    textoEntradaCPF = tkinter.StringVar()
+    e_cpf = tkinter.Entry(root, textvariable=textoEntradaCPF)
     e_cpf.pack()
 
     label_estado = tkinter.Label(root, text="Estado")
     label_estado.pack()
-    e_estado = tkinter.Entry(root)
+    textoEntradaEstado = tkinter.StringVar()
+    e_estado = tkinter.Entry(root, textvariable=textoEntradaEstado)
     e_estado.pack()
     
     test2 = tkinter.Button(root, text="Salvar")
-    test2['command'] = funcExemplo
+    test2['command'] = lambda: funcSalvar(textoEntradaNome.get(), textoEntradaCPF.get(), textoEntradaEstado.get())
     test2.pack()
 
     root.iconify()
